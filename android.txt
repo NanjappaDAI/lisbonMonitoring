@@ -1,0 +1,19 @@
+Android Devices
+1. samsung SM-A225F 		 0731                Elvas                 11.0                            192.168.254.22                                                                                              
+1. samsung sm-a225f00 	 731 	 	 11.0 	 	 192.168.254.22  	 	 null  
+2. samsung SM-S931B 		 0652                sintr                 15.0                 MITM      192.168.254.139                      faro-wifi                                                               
+2. samsung sm-s931b00 	 652 	 	 15.0 	 	 192.168.254.139 faro-wifi 	 	 null  
+3. Google Pixel 8   		 0522                porto                 14.0                 MITM      192.168.254.204                          evora                                                               
+3. google pixel 80000 	 522 	 	 14.0 	 	 192.168.254.204 evora 	 	 null  
+4. samsung SM-S9110 		 0591                porto                 13.0                 MITM      192.168.254.161                          evora                                                               
+4. samsung sm-s911000 	 591 	 	 13.0 	 	 192.168.254.161 evora 	 	 null  
+5. samsung SM-G980F 		 0544                porto                 11.0                            192.168.254.25                                                                                              
+5. samsung sm-g980f00 	 544 	 	 11.0 	 	 192.168.254.25  	 	 null  
+6. samsung SM-G950F 		 0571                porto                  9.0                            192.168.254.92                                                                                              
+6. samsung sm-g950f00 	 571 	 	 9.0 	 	 192.168.254.92  	 	 null  
+7. samsung SM-T870  		 0750                Elvas                 13.0                 MITM       192.168.254.44                      faro-wifi                                                               
+7. samsung sm-t870000 	 750 	 	 13.0 	 	 192.168.254.44 faro-wifi 	 	 null  
+8. Google Pixel 5   		 0680                sintr                 14.0                 MITM      192.168.254.104                      faro-wifi                                                               
+8. google pixel 50000 	 680 	 	 14.0 	 	 192.168.254.104 faro-wifi 	 	 null  
+9. samsung SM-G991B 		 0733                Elvas                 14.0                            192.168.254.82                      faro-wifi                                                               
+9. samsung sm-g991b00 	 733 	 	 14.0 	 	 192.168.254.82 faro-wifi 	 	 null  

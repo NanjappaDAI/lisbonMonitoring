@@ -1,0 +1,17 @@
+   DeviceName=            DeviceID=           DeviceIP=           BTStatus
+1. Google Pixel 8 = 	 	 613 = 192.168.254.204 = null
+2. B0235 = 	 	 604 = null = {adapterName:Adapter_1,state:PAIRED}
+3. B0274 = 	 	 607 = 192.168.254.173 = {adapterName:Adapter_2,state:NOT_PAIRED}
+4. B0281 = 	 	 628 = 192.168.8.98 = null
+5. samsung SM-G991B = 	 	 661 = 192.168.254.82 = null
+6. samsung SM-T870 = 	 	 663 = 192.168.254.44 = null
+7. 09241FDD40079M = 	 	 657 = null = null
+8. jenkinss iPhone_B0175 = 	 	 642 = 192.168.254.65 = null
+9. B0276 = 	 	 643 = 192.168.10.81 = null
+10. B0112 = 	 	 605 = 192.168.254.90 = null
+11. B0502 = 	 	 606 = 192.168.254.99 = null
+12. B0500 = 	 	 623 = 192.168.8.105 = null
+13. B0272 = 	 	 622 = 192.168.254.87 = null
+14. B0275 = 	 	 624 = 192.168.254.85 = null
+15. iPhoneXR_B0234_Red = 	 	 641 = 192.168.254.86 = null
+16. samsung SM-G980F = 	 	 659 = 192.168.254.25 = null

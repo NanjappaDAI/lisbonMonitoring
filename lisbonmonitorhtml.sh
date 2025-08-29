@@ -5,7 +5,7 @@ deviceArray=()
 exec > /Users/auto/lisbonmonitor/outputfile.txt
 echo "start-here";
 echo "<html><body><table border=1>"
-echo "<tr><td> Lisbon cloud monitoring report : </td><td> $dateval </td></tr>"
+echo "<tr><td><span style='color:#003366'>LISBON</span> cloud monitoring report :</td><td> $dateval </td></tr>"
 
 porto=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.2.80 'df -h | grep disk1s1')
 #porto=$(sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.2.80 'df -h | grep disk1s1')
@@ -143,7 +143,7 @@ echo "<p>       </p>"
 
 
 echo "<html><body><table border=1>"
-echo "<tr><td> Bern cloud monitoring report : </td><td> $dateval </td></tr>"
+echo "<tr><td><span style='color:#003366'>BERN</span> cloud monitoring report :</td><td> $dateval </td></tr>"
 bern=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.6.103 'df -h | grep ubuntu')
 IFS=' ' read -ra deviceSplit <<< "$bern"
 bernfs=${deviceSplit[3]}
@@ -174,7 +174,7 @@ echo "</table></body></html>";
 echo "<p>       </p>"
 
 echo "<html><body><table border=1>"
-echo "<tr><td> Washington cloud monitoring report : </td><td> $dateval </td></tr>"
+echo "<tr><td><span style='color:#003366'>WASHINGTON</span> cloud monitoring report :</td><td> $dateval </td></tr>"
 washington=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.2.83 'df -h | grep centos-home')
 IFS=' ' read -ra deviceSplit <<< "$washington"
 washingtonfs=${deviceSplit[3]}
@@ -208,7 +208,7 @@ echo "</table></body></html>";
 echo "<p>       </p>"
 
 echo "<html><body><table border=1>"
-echo "<tr><td> Seoul cloud monitoring report : </td><td> $dateval </td></tr>"
+echo "<tr><td><span style='color:#003366'>SEOUL</span> cloud monitoring report :</td><td> $dateval </td></tr>"
 seoul=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.2.174 'df -h | grep ubuntu')
 IFS=' ' read -ra deviceSplit <<< "$seoul"
 seoulfs=${deviceSplit[3]}
@@ -236,7 +236,7 @@ echo "</table></body></html>";
 echo "<p>       </p>"
 
 echo "<html><body><table border=1>"
-echo "<tr><td> tokyo cloud monitoring report : </td><td> $dateval </td></tr>"
+echo "<tr><td><span style='color:#003366'>TOKYO</span> cloud monitoring report :</td><td> $dateval </td></tr>"
 tokyo=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.6.201 'df -h | grep ubuntu')
 IFS=' ' read -ra deviceSplit <<< "$tokyo"
 tokyofs=${deviceSplit[3]}

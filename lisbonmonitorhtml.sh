@@ -44,12 +44,12 @@ IFS=' ' read -ra deviceSplit <<< "$tcagent"
 tcagentfs=${deviceSplit[3]}
 echo "<tr><td> Teamcity agent free space </td><td>$tcagentfs</td></tr>"
 
-nvserverArray=$(curl -s GET 'https://lisbon.experitest.com/api/v2/nv-servers' -H "Authorization: Bearer $accessKey" | jq -rj '.[]|"\(.name): \(.status);"')
+nvserverArray=$(curl -s GET 'https://lisbon.experitest.com/api/v2/nv-servers' -H "Authorization: Bearer $accessKey" | jq -rj '.[]|"\(.name): \(.status): \(.version);"')
 IFS=';' eval 'array=($nvserverArray)'
 echo "<tr><td>NV server 1 </td><td> ${array[0]} </td></tr>"
 echo "<tr><td>NV server 2 </td><td> ${array[1]} </td></tr>"
 
-agentsArray=$(curl -s GET 'https://lisbon.experitest.com/api/v2/agents' -H "Authorization: Bearer $accessKey" | jq -rj '.[]|"\(.name): \(.statusForDisplay): \(.nvServerName);"')
+agentsArray=$(curl -s GET 'https://lisbon.experitest.com/api/v2/agents' -H "Authorization: Bearer $accessKey" | jq -rj '.[]|"\(.name): \(.statusForDisplay):  \(.version): \(.nvServerName);"')
 IFS=';' eval 'array=($agentsArray)'
 echo "<tr><td>Agent 1 </td><td> ${array[0]} </td></tr>"
 echo "<tr><td>Agent 2 </td><td> ${array[1]} </td></tr>"
@@ -58,14 +58,14 @@ echo "<tr><td>Agent 4 </td><td> ${array[3]} </td></tr>"
 echo "<tr><td>Agent 5 </td><td> ${array[4]} </td></tr>"
 
 
-regionArray=$(curl -s GET 'https://lisbon.experitest.com/api/v2/regions' -H "Authorization: Bearer $accessKey" | jq -rj '.[]|"\(.name): \(.status);"')
+regionArray=$(curl -s GET 'https://lisbon.experitest.com/api/v2/regions' -H "Authorization: Bearer $accessKey" | jq -rj '.[]|"\(.name): \(.status): \(.version);"')
 IFS=';' eval 'array=($regionArray)'
 echo
 
 echo "<tr><td>Region 1 </td><td> ${array[0]} </td></tr>"
 echo "<tr><td>Region 2 </td><td> ${array[1]} </td></tr>"
 
-servicesArray=$(curl -s GET 'https://lisbon.experitest.com/api/v2/region-services' -H "Authorization: Bearer $accessKey" | jq -rj '.[]|"\(.hostOrIp) \(.type): \(.status);"')
+servicesArray=$(curl -s GET 'https://lisbon.experitest.com/api/v2/region-services' -H "Authorization: Bearer $accessKey" | jq -rj '.[]|"\(.hostOrIp) \(.type): \(.status): \(.version);"')
 IFS=';' eval 'array=($servicesArray)'
 echo "<tr><td>Service 1 </td><td> ${array[0]} </td></tr>"
 echo "<tr><td>Service 2 </td><td> ${array[1]} </td></tr>"
@@ -139,6 +139,9 @@ if [ $deviceOS == iOS ]; then
 done
 echo "</table></body></html>";
 
+echo "<p>       </p>"
+
+
 echo "<html><body><table border=1>"
 echo "<tr><td> Bern cloud monitoring report : </td><td> $dateval </td></tr>"
 bern=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.6.103 'df -h | grep ubuntu')
@@ -146,5 +149,130 @@ IFS=' ' read -ra deviceSplit <<< "$bern"
 bernfs=${deviceSplit[3]}
 echo "<tr><td> Bern free space </td><td> $bernfs </td></tr>"
 echo "</table></body></html>";
+
+zurichUploads=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.4.17 'du -sh /var/lib/Experitest/reporter/uploads/')
+IFS='/' read -ra deviceSplit <<< "$zurichUploads"
+zurichUploadsSize=${deviceSplit[0]}
+echo "<tr><td> Reporter uploads folder size </td><td> $zurichUploadsSize </td></tr>"
+
+bernAccessKey=eyJhbGciOiJIUzI1NiJ9.eyJ4cC51Ijo0NiwieHAucCI6MSwieHAubSI6MTYxODMyMTUzMjE0MSwiZXhwIjoxOTMzNjgxNTMyLCJpc3MiOiJjb20uZXhwZXJpdGVzdCJ9.c0tfNig-U-Xlj5yurF3_z9UXMAav-MU-6-8rXOXIQSM
+
+bernAgentsArray=$(curl -s GET 'https://bern.experitest.com/api/v2/agents' -H "Authorization: Bearer $bernAccessKey" | jq -rj '.[]|"\(.name): \(.statusForDisplay):  \(.version);"')
+IFS=';' eval 'array=($bernAgentsArray)'
+echo "<tr><td>Agent 1 </td><td> ${array[0]} </td></tr>"
+
+bernRegionArray=$(curl -s GET 'https://bern.experitest.com/api/v2/regions' -H "Authorization: Bearer $bernAccessKey" | jq -rj '.[]|"\(.name): \(.status): \(.version);"')
+IFS=';' eval 'array=($bernRegionArray)'
+echo
+echo "<tr><td>Region 1 </td><td> ${array[0]} </td></tr>"
+
+bernServicesArray=$(curl -s GET 'https://bern.experitest.com/api/v2/region-services' -H "Authorization: Bearer $bernAccessKey" | jq -rj '.[]|"\(.hostOrIp) \(.type): \(.status): \(.version);"')
+IFS=';' eval 'array=($bernServicesArray)'
+echo "<tr><td>Service 1 </td><td> ${array[0]} </td></tr>"
+echo "<tr><td>Service 2 </td><td> ${array[1]} </td></tr>"
+echo "<tr><td>Service 3 </td><td> ${array[2]} </td></tr>"
+echo "</table></body></html>";
+echo "<p>       </p>"
+
+echo "<html><body><table border=1>"
+echo "<tr><td> Washington cloud monitoring report : </td><td> $dateval </td></tr>"
+washington=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.2.83 'df -h | grep centos-home')
+IFS=' ' read -ra deviceSplit <<< "$washington"
+washingtonfs=${deviceSplit[3]}
+echo "<tr><td> Washington free space </td><td> $washingtonfs </td></tr>"
+echo "</table></body></html>";
+
+washingtonUploads=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.2.83 'du -sh /home/qa/data/reporter/uploads')
+IFS='/' read -ra deviceSplit <<< "$washingtonUploads"
+washingtonUploadsSize=${deviceSplit[0]}
+echo "<tr><td> Reporter uploads folder size </td><td> $washingtonUploadsSize </td></tr>"
+
+washingtonAccessKey=eyJhbGciOiJIUzI1NiJ9.eyJ4cC51Ijo0OSwieHAucCI6MSwieHAubSI6MTU5NzU3NTg5MjQwNywiZXhwIjoxOTEyOTM1ODkyLCJpc3MiOiJjb20uZXhwZXJpdGVzdCJ9.IfZLbSPp-tKjszUJ4juOainuWkUZzlSa72ijnTMOSuo
+
+washingtonAgentsArray=$(curl -s GET 'https://washington.experitest.com/api/v2/selenium-agents' -H "Authorization: Bearer $washingtonAccessKey" | jq -rj '.[]|"\(.name): \(.connected): \(.status):  \(.version);"')
+IFS=';' eval 'array=($washingtonAgentsArray)'
+echo "<tr><td>Agent 1 </td><td> ${array[0]} </td></tr>"
+echo "<tr><td>Agent 2 </td><td> ${array[1]} </td></tr>"
+echo "<tr><td>Agent 3 </td><td> ${array[2]} </td></tr>"
+echo "<tr><td>Agent 4 </td><td> ${array[3]} </td></tr>"
+
+washingtonRegionArray=$(curl -s GET 'https://washington.experitest.com/api/v2/regions' -H "Authorization: Bearer $washingtonAccessKey" | jq -rj '.[]|"\(.name): \(.status): \(.version);"')
+IFS=';' eval 'array=($washingtonRegionArray)'
+echo
+echo "<tr><td>Region 1 </td><td> ${array[0]} </td></tr>"
+
+washingtonServicesArray=$(curl -s GET 'https://washington.experitest.com/api/v2/region-services' -H "Authorization: Bearer $washingtonAccessKey" | jq -rj '.[]|"\(.hostOrIp) \(.type): \(.status): \(.version);"')
+IFS=';' eval 'array=($washingtonServicesArray)'
+echo "<tr><td>Service 1 </td><td> ${array[0]} </td></tr>"
+echo "<tr><td>Service 2 </td><td> ${array[1]} </td></tr>"
+echo "<tr><td>Service 3 </td><td> ${array[2]} </td></tr>"
+echo "</table></body></html>";
+echo "<p>       </p>"
+
+echo "<html><body><table border=1>"
+echo "<tr><td> Seoul cloud monitoring report : </td><td> $dateval </td></tr>"
+seoul=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.2.174 'df -h | grep ubuntu')
+IFS=' ' read -ra deviceSplit <<< "$seoul"
+seoulfs=${deviceSplit[3]}
+echo "<tr><td> Seoul free space </td><td> $seoulfs </td></tr>"
+echo "</table></body></html>";
+
+seoulUploads=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.2.174 'du -sh /var/lib/Experitest/reporter/uploads')
+IFS='/' read -ra deviceSplit <<< "$seoulUploads"
+seoulUploadsSize=${deviceSplit[0]}
+echo "<tr><td> Reporter uploads folder size </td><td> $seoulUploadsSize </td></tr>"
+
+seoulAccessKey=eyJhbGciOiJIUzI1NiJ9.eyJ4cC51Ijo0NiwieHAucCI6MSwieHAubSI6MTYxODMyMTUzMjE0MSwiZXhwIjoxOTMzNjgxNTMyLCJpc3MiOiJjb20uZXhwZXJpdGVzdCJ9.c0tfNig-U-Xlj5yurF3_z9UXMAav-MU-6-8rXOXIQSM
+
+seoulRegionArray=$(curl -s GET 'https://seoul.experitest.com/api/v2/regions' -H "Authorization: Bearer $seoulAccessKey" | jq -rj '.[]|"\(.name): \(.status): \(.version);"')
+IFS=';' eval 'array=($seoulRegionArray)'
+echo
+echo "<tr><td>Region 1 </td><td> ${array[0]} </td></tr>"
+
+seoulServicesArray=$(curl -s GET 'https://seoul.experitest.com/api/v2/region-services' -H "Authorization: Bearer $seoulAccessKey" | jq -rj '.[]|"\(.hostOrIp) \(.type): \(.status): \(.version);"')
+IFS=';' eval 'array=($seoulServicesArray)'
+echo "<tr><td>Service 1 </td><td> ${array[0]} </td></tr>"
+echo "<tr><td>Service 2 </td><td> ${array[1]} </td></tr>"
+echo "<tr><td>Service 3 </td><td> ${array[2]} </td></tr>"
+echo "<tr><td>Service 3 </td><td> ${array[3]} </td></tr>"
+echo "</table></body></html>";
+echo "<p>       </p>"
+
+echo "<html><body><table border=1>"
+echo "<tr><td> tokyo cloud monitoring report : </td><td> $dateval </td></tr>"
+tokyo=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.6.201 'df -h | grep ubuntu')
+IFS=' ' read -ra deviceSplit <<< "$tokyo"
+tokyofs=${deviceSplit[3]}
+echo "<tr><td> tokyo free space </td><td> $tokyofs </td></tr>"
+echo "</table></body></html>";
+
+tokyoUploads=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.6.201 'du -sh /var/lib/Experitest/reporter/uploads')
+IFS='/' read -ra deviceSplit <<< "$tokyoUploads"
+tokyoUploadsSize=${deviceSplit[0]}
+echo "<tr><td> Reporter uploads folder size </td><td> $tokyoUploadsSize </td></tr>"
+
+tokyoAccessKey=eyJhbGciOiJIUzI1NiJ9.eyJ4cC51Ijo0NiwieHAucCI6MSwieHAubSI6MTYxODMyMTUzMjE0MSwiZXhwIjoxOTMzNjgxNTMyLCJpc3MiOiJjb20uZXhwZXJpdGVzdCJ9.c0tfNig-U-Xlj5yurF3_z9UXMAav-MU-6-8rXOXIQSM
+
+tokyoAgentsArray=$(curl -s GET 'https://tokyo.experitest.com/api/v2/selenium-agents' -H "Authorization: Bearer $tokyoAccessKey" | jq -rj '.[]|"\(.name): \(.connected): \(.status):  \(.version);"')
+IFS=';' eval 'array=($tokyoAgentsArray)'
+echo "<tr><td>Agent 1 </td><td> ${array[0]} </td></tr>"
+echo "<tr><td>Agent 2 </td><td> ${array[1]} </td></tr>"
+echo "<tr><td>Agent 3 </td><td> ${array[2]} </td></tr>"
+echo "<tr><td>Agent 4 </td><td> ${array[3]} </td></tr>"
+echo "<tr><td>Agent 5 </td><td> ${array[4]} </td></tr>"
+
+tokyoRegionArray=$(curl -s GET 'https://tokyo.experitest.com/api/v2/regions' -H "Authorization: Bearer $tokyoAccessKey" | jq -rj '.[]|"\(.name): \(.status): \(.version);"')
+IFS=';' eval 'array=($tokyoRegionArray)'
+echo
+echo "<tr><td>Region 1 </td><td> ${array[0]} </td></tr>"
+
+tokyoServicesArray=$(curl -s GET 'https://tokyo.experitest.com/api/v2/region-services' -H "Authorization: Bearer $tokyoAccessKey" | jq -rj '.[]|"\(.hostOrIp) \(.type): \(.status): \(.version);"')
+IFS=';' eval 'array=($tokyoServicesArray)'
+echo "<tr><td>Service 1 </td><td> ${array[0]} </td></tr>"
+echo "<tr><td>Service 2 </td><td> ${array[1]} </td></tr>"
+echo "<tr><td>Service 3 </td><td> ${array[2]} </td></tr>"
+echo "</table></body></html>";
+echo "<p>       </p>"
+
 
 echo "end-here";

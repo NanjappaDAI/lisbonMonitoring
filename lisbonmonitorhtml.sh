@@ -148,7 +148,6 @@ bern=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@1
 IFS=' ' read -ra deviceSplit <<< "$bern"
 bernfs=${deviceSplit[3]}
 echo "<tr><td> Bern free space </td><td> $bernfs </td></tr>"
-echo "</table></body></html>";
 
 zurichUploads=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.4.17 'du -sh /var/lib/Experitest/reporter/uploads/')
 IFS='/' read -ra deviceSplit <<< "$zurichUploads"
@@ -180,7 +179,6 @@ washington=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no 
 IFS=' ' read -ra deviceSplit <<< "$washington"
 washingtonfs=${deviceSplit[3]}
 echo "<tr><td> Washington free space </td><td> $washingtonfs </td></tr>"
-echo "</table></body></html>";
 
 washingtonUploads=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.2.83 'du -sh /home/qa/data/reporter/uploads')
 IFS='/' read -ra deviceSplit <<< "$washingtonUploads"
@@ -215,7 +213,6 @@ seoul=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@
 IFS=' ' read -ra deviceSplit <<< "$seoul"
 seoulfs=${deviceSplit[3]}
 echo "<tr><td> Seoul free space </td><td> $seoulfs </td></tr>"
-echo "</table></body></html>";
 
 seoulUploads=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.2.174 'du -sh /var/lib/Experitest/reporter/uploads')
 IFS='/' read -ra deviceSplit <<< "$seoulUploads"
@@ -244,7 +241,6 @@ tokyo=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@
 IFS=' ' read -ra deviceSplit <<< "$tokyo"
 tokyofs=${deviceSplit[3]}
 echo "<tr><td> tokyo free space </td><td> $tokyofs </td></tr>"
-echo "</table></body></html>";
 
 tokyoUploads=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.6.201 'du -sh /var/lib/Experitest/reporter/uploads')
 IFS='/' read -ra deviceSplit <<< "$tokyoUploads"

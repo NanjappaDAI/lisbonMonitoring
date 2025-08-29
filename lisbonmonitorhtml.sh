@@ -140,4 +140,4 @@ echo "<tr><td> Porto free space </td><td> $portofs </td></tr>"
 #done
 
 echo "</table></body></html>";
-echo "end-here\n";
+echo "end-here";

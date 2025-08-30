@@ -2,7 +2,7 @@
 accessKey=eyJhbGciOiJIUzI1NiJ9.eyJ4cC51Ijo0MiwieHAucCI6MywieHAubSI6MTcwMTAwMjYwNzIxMiwiZXhwIjoyMDE2MzYyNjA3LCJpc3MiOiJjb20uZXhwZXJpdGVzdCJ9.SMGYMR4IFha22QTlFFHg9UdyayG4kx4VcRHg7PjsYBY
 dateval=$(date)
 deviceArray=()
-#exec > /Users/auto/lisbonmonitor/outputfile.txt
+exec > /Users/auto/lisbonmonitor/outputfile.txt
 
 echo "start-here";
 echo "<html><body><table border=1>"

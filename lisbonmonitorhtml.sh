@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 accessKey=eyJhbGciOiJIUzI1NiJ9.eyJ4cC51Ijo0MiwieHAucCI6MywieHAubSI6MTcwMTAwMjYwNzIxMiwiZXhwIjoyMDE2MzYyNjA3LCJpc3MiOiJjb20uZXhwZXJpdGVzdCJ9.SMGYMR4IFha22QTlFFHg9UdyayG4kx4VcRHg7PjsYBY
 dateval=$(date)
 deviceArray=()
-exec > /Users/auto/lisbonmonitor/outputfile.txt
+#exec > /Users/auto/lisbonmonitor/outputfile.txt
 
 echo "start-here";
 echo "<html><body><table border=1>"
@@ -103,7 +103,7 @@ if [ ! -z "$deviceRegion" -a "$deviceRegion" != " " ]; then
   IFS=' ' read -ra deviceIPSplit <<< "$deviceIP"
   deviceIPAddr=${deviceIPSplit[0]}
   deviceWiFiName=${deviceIPSplit[1]}
-if [ "$deviceOS" == "Android" ]; then
+if [ $deviceOS == Android ]; then
   curlOP=$(curl -s -L -X GET https://lisbon.experitest.com/api/v1/devices/$deviceID/cacerts -H "Authorization: Bearer $accessKey")
   if [[ $curlOP == *"mitmproxy"* ]]; then
   mitmCertsAvailable="MITM"

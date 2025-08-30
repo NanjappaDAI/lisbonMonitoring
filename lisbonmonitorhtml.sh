@@ -104,7 +104,6 @@ if [ ! -z "$deviceRegion" -a "$deviceRegion" != " " ]; then
   deviceIPAddr=${deviceIPSplit[0]}
   deviceWiFiName=${deviceIPSplit[1]}
 if [ "$deviceOS" == "Android" ]; then
-  echo $deviceName
   curlOP=$(curl -s -L -X GET https://lisbon.experitest.com/api/v1/devices/$deviceID/cacerts -H "Authorization: Bearer $accessKey")
   if [[ $curlOP == *"mitmproxy"* ]]; then
   mitmCertsAvailable="MITM"
@@ -125,7 +124,7 @@ for element in ${array[@]}; do
   deviceID=${deviceSplit[0]}
   deviceName=${deviceSplit[1]}
   deviceRegion=${deviceSplit[2]}
-  deviceOS=${deviceSplit[3}
+  deviceOS=${deviceSplit[3]}
   OSVersion=${deviceSplit[4]}
   agentName=${deviceSplit[5]}
   btStatus=${deviceSplit[6]}

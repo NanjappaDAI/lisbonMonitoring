@@ -3,9 +3,10 @@ accessKey=eyJhbGciOiJIUzI1NiJ9.eyJ4cC51Ijo0MiwieHAucCI6MywieHAubSI6MTcwMTAwMjYwN
 dateval=$(date)
 deviceArray=()
 exec > /Users/auto/lisbonmonitor/outputfile.txt
+
 echo "start-here";
 echo "<html><body><table border=1>"
-echo "<tr><td><span style='color:#1e90ff'>LISBON</span> cloud monitoring report :</td><td> $dateval </td></tr>"
+echo "<tr><td><span style='color:#1e90ff'>LISBON cloud monitoring report</span>:</td><td> $dateval </td></tr>"
 
 porto=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.2.80 'df -h | grep disk1s1')
 #porto=$(sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.2.80 'df -h | grep disk1s1')
@@ -78,13 +79,11 @@ echo "<tr><td>Service 8 </td><td> ${array[7]} </td></tr>"
 echo "</table></body></html>";
 echo "<p>       </p>"
 
-deviceArray=$(curl -s GET 'https://lisbon.experitest.com/api/v1/devices' -H "Authorization: Bearer $accessKey" | jq -rj '.data[]|"\(.id)%\(.deviceName)%\(.region)%\(.bluetooth)%\(.deviceOs)%\(.osVersion)%\(.agentName);"')
+echo "<html><body><table border=1>"
+deviceArray=$(curl -s GET 'https://lisbon.experitest.com/api/v1/devices' -H "Authorization: Bearer $accessKey" | jq -rj '.data[]|"\(.id)%\(.deviceName)%\(.region)%\(.deviceOs)%\(.osVersion)%\(.agentName)%\(.bluetooth);"')
 IFS=';' eval 'array=($deviceArray)'
 ai=1
 i=1
-
-echo "<html><body><table border=1>"
-
 for element in ${array[@]}; do
   max=0
   extraChars=""
@@ -92,19 +91,20 @@ for element in ${array[@]}; do
   deviceID=${deviceSplit[0]}
   deviceName=${deviceSplit[1]}
   deviceRegion=${deviceSplit[2]}
-  btStatus=${deviceSplit[3]}
-  deviceOS=${deviceSplit[4]}
-  OSVersion=${deviceSplit[5]}
-  agentName=${deviceSplit[6]}
+  deviceOS=${deviceSplit[3]}
+  OSVersion=${deviceSplit[4]}
+  agentName=${deviceSplit[5]}
+  btStatus=${deviceSplit[6]}
   max="$((17-${#deviceName}))"
-  deviceName=$(echo $deviceName | tr '[:lower:]' '[:upper:]')
 
+  deviceName=$(echo $deviceName | tr '[:lower:]' '[:upper:]')
 if [ ! -z "$deviceRegion" -a "$deviceRegion" != " " ]; then
   deviceIP=$(curl -s GET https://lisbon.experitest.com/api/v1/devices/$deviceID/WifiIPAddress -H "Authorization: Bearer $accessKey" | jq -rj '(.v4)," ",(.ssid)')
   IFS=' ' read -ra deviceIPSplit <<< "$deviceIP"
   deviceIPAddr=${deviceIPSplit[0]}
   deviceWiFiName=${deviceIPSplit[1]}
-if [ $deviceOS == Android ]; then
+if [ "$deviceOS" == "Android" ]; then
+  echo $deviceName
   curlOP=$(curl -s -L -X GET https://lisbon.experitest.com/api/v1/devices/$deviceID/cacerts -H "Authorization: Bearer $accessKey")
   if [[ $curlOP == *"mitmproxy"* ]]; then
   mitmCertsAvailable="MITM"
@@ -118,16 +118,17 @@ fi
 done
 echo "</table></body></html>";
 echo "<p>       </p>"
+
 echo "<html><body><table border=1>"
 for element in ${array[@]}; do
   IFS='%' read -ra deviceSplit <<< "$element"
   deviceID=${deviceSplit[0]}
   deviceName=${deviceSplit[1]}
   deviceRegion=${deviceSplit[2]}
-  btStatus=${deviceSplit[3]}
-  deviceOS=${deviceSplit[4]}
-  OSVersion=${deviceSplit[5]}
-  agentName=${deviceSplit[6]}
+  deviceOS=${deviceSplit[3}
+  OSVersion=${deviceSplit[4]}
+  agentName=${deviceSplit[5]}
+  btStatus=${deviceSplit[6]}
 if [ ! -z "$deviceRegion" -a "$deviceRegion" != " " ]; then
   deviceIP=$(curl -s GET https://lisbon.experitest.com/api/v1/devices/$deviceID/WifiIPAddress -H "Authorization: Bearer $accessKey" | jq -rj '(.v4)," ",(.ssid)')
   IFS=' ' read -ra deviceIPSplit <<< "$deviceIP"
@@ -138,12 +139,10 @@ if [ $deviceOS == iOS ]; then
  fi
 done
 echo "</table></body></html>";
-
 echo "<p>       </p>"
 
-
 echo "<html><body><table border=1>"
-echo "<tr><td><span style='color:#1e90ff'>BERN</span> cloud monitoring report :</td><td> $dateval </td></tr>"
+echo "<tr><td><span style='color:#1e90ff'>BERN cloud monitoring report </span> :</td><td> $dateval </td></tr>"
 bern=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.6.103 'df -h | grep ubuntu')
 IFS=' ' read -ra deviceSplit <<< "$bern"
 bernfs=${deviceSplit[3]}
@@ -174,7 +173,7 @@ echo "</table></body></html>";
 echo "<p>       </p>"
 
 echo "<html><body><table border=1>"
-echo "<tr><td><span style='color:#1e90ff'>WASHINGTON</span> cloud monitoring report :</td><td> $dateval </td></tr>"
+echo "<tr><td><span style='color:#1e90ff'>WASHINGTON cloud monitoring report </span> :</td><td> $dateval </td></tr>"
 washington=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.2.83 'df -h | grep centos-home')
 IFS=' ' read -ra deviceSplit <<< "$washington"
 washingtonfs=${deviceSplit[3]}
@@ -208,7 +207,7 @@ echo "</table></body></html>";
 echo "<p>       </p>"
 
 echo "<html><body><table border=1>"
-echo "<tr><td><span style='color:#1e90ff'>SEOUL</span> cloud monitoring report :</td><td> $dateval </td></tr>"
+echo "<tr><td><span style='color:#1e90ff'>SEOUL cloud monitoring report </span> :</td><td> $dateval </td></tr>"
 seoul=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.2.174 'df -h | grep ubuntu')
 IFS=' ' read -ra deviceSplit <<< "$seoul"
 seoulfs=${deviceSplit[3]}
@@ -236,7 +235,7 @@ echo "</table></body></html>";
 echo "<p>       </p>"
 
 echo "<html><body><table border=1>"
-echo "<tr><td><span style='color:#1e90ff'>TOKYO</span> cloud monitoring report :</td><td> $dateval </td></tr>"
+echo "<tr><td><span style='color:#1e90ff'>TOKYO cloud monitoring report </span> :</td><td> $dateval </td></tr>"
 tokyo=$(/usr/local/bin/sshpass -p Ab123456 ssh -o StrictHostKeyChecking=no auto@192.168.6.201 'df -h | grep ubuntu')
 IFS=' ' read -ra deviceSplit <<< "$tokyo"
 tokyofs=${deviceSplit[3]}

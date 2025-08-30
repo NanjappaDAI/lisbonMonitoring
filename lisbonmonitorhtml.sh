@@ -4,7 +4,6 @@ dateval=$(date)
 deviceArray=()
 exec > /Users/auto/lisbonmonitor/outputfile.txt
 
-echo "start-here";
 echo "<html><body><table border=1>"
 echo "<tr><td><span style='color:#1e90ff'>LISBON cloud monitoring report</span>:</td><td> $dateval </td></tr>"
 
@@ -187,10 +186,10 @@ washingtonAccessKey=eyJhbGciOiJIUzI1NiJ9.eyJ4cC51Ijo0OSwieHAucCI6MSwieHAubSI6MTU
 
 washingtonAgentsArray=$(curl -s GET 'https://washington.experitest.com/api/v2/selenium-agents' -H "Authorization: Bearer $washingtonAccessKey" | jq -rj '.[]|"\(.name): \(.connected): \(.status):  \(.version);"')
 IFS=';' eval 'array=($washingtonAgentsArray)'
-echo "<tr><td>Agent 1 </td><td> ${array[0]} </td></tr>"
-echo "<tr><td>Agent 2 </td><td> ${array[1]} </td></tr>"
-echo "<tr><td>Agent 3 </td><td> ${array[2]} </td></tr>"
-echo "<tr><td>Agent 4 </td><td> ${array[3]} </td></tr>"
+echo "<tr><td>Selenium Agent 1 </td><td> ${array[0]} </td></tr>"
+echo "<tr><td>Selenium Agent 2 </td><td> ${array[1]} </td></tr>"
+echo "<tr><td>Selenium Agent 3 </td><td> ${array[2]} </td></tr>"
+echo "<tr><td>Selenium Agent 4 </td><td> ${array[3]} </td></tr>"
 
 washingtonRegionArray=$(curl -s GET 'https://washington.experitest.com/api/v2/regions' -H "Authorization: Bearer $washingtonAccessKey" | jq -rj '.[]|"\(.name): \(.status): \(.version);"')
 IFS=';' eval 'array=($washingtonRegionArray)'
@@ -249,11 +248,11 @@ tokyoAccessKey=eyJhbGciOiJIUzI1NiJ9.eyJ4cC51Ijo0NiwieHAucCI6MSwieHAubSI6MTYxODMy
 
 tokyoAgentsArray=$(curl -s GET 'https://tokyo.experitest.com/api/v2/selenium-agents' -H "Authorization: Bearer $tokyoAccessKey" | jq -rj '.[]|"\(.name): \(.connected): \(.status):  \(.version);"')
 IFS=';' eval 'array=($tokyoAgentsArray)'
-echo "<tr><td>Agent 1 </td><td> ${array[0]} </td></tr>"
-echo "<tr><td>Agent 2 </td><td> ${array[1]} </td></tr>"
-echo "<tr><td>Agent 3 </td><td> ${array[2]} </td></tr>"
-echo "<tr><td>Agent 4 </td><td> ${array[3]} </td></tr>"
-echo "<tr><td>Agent 5 </td><td> ${array[4]} </td></tr>"
+echo "<tr><td>Selenium Agent 1 </td><td> ${array[0]} </td></tr>"
+echo "<tr><td>Selenium Agent 2 </td><td> ${array[1]} </td></tr>"
+echo "<tr><td>Selenium Agent 3 </td><td> ${array[2]} </td></tr>"
+echo "<tr><td>Selenium Agent 4 </td><td> ${array[3]} </td></tr>"
+echo "<tr><td>Selenium Agent 5 </td><td> ${array[4]} </td></tr>"
 
 tokyoRegionArray=$(curl -s GET 'https://tokyo.experitest.com/api/v2/regions' -H "Authorization: Bearer $tokyoAccessKey" | jq -rj '.[]|"\(.name): \(.status): \(.version);"')
 IFS=';' eval 'array=($tokyoRegionArray)'
@@ -267,6 +266,3 @@ echo "<tr><td>Service 2 </td><td> ${array[1]} </td></tr>"
 echo "<tr><td>Service 3 </td><td> ${array[2]} </td></tr>"
 echo "</table></body></html>";
 echo "<p>       </p>"
-
-
-echo "end-here";

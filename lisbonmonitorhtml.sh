@@ -62,8 +62,8 @@ regionArray=$(curl -s GET 'https://lisbon.experitest.com/api/v2/regions' -H "Aut
 IFS=';' eval 'array=($regionArray)'
 echo
 
-echo "<tr><td>Region 1 </td><td> ${array[0]} </td></tr>"
-echo "<tr><td>Region 2 </td><td> ${array[1]} </td></tr>"
+echo "<tr><td>Lisbon Region 1 </td><td> ${array[0]} </td></tr>"
+echo "<tr><td>Lisbon Region 2 </td><td> ${array[1]} </td></tr>"
 
 servicesArray=$(curl -s GET 'https://lisbon.experitest.com/api/v2/region-services' -H "Authorization: Bearer $accessKey" | jq -rj '.[]|"\(.hostOrIp) \(.type): \(.status): \(.version);"')
 IFS=';' eval 'array=($servicesArray)'
@@ -160,7 +160,7 @@ echo "<tr><td>Agent 1 </td><td> ${array[0]} </td></tr>"
 bernRegionArray=$(curl -s GET 'https://bern.experitest.com/api/v2/regions' -H "Authorization: Bearer $bernAccessKey" | jq -rj '.[]|"\(.name): \(.status): \(.version);"')
 IFS=';' eval 'array=($bernRegionArray)'
 echo
-echo "<tr><td>Region 1 </td><td> ${array[0]} </td></tr>"
+echo "<tr><td>Bern Region 1 </td><td> ${array[0]} </td></tr>"
 
 bernServicesArray=$(curl -s GET 'https://bern.experitest.com/api/v2/region-services' -H "Authorization: Bearer $bernAccessKey" | jq -rj '.[]|"\(.hostOrIp) \(.type): \(.status): \(.version);"')
 IFS=';' eval 'array=($bernServicesArray)'
@@ -194,7 +194,7 @@ echo "<tr><td>Selenium Agent 4 </td><td> ${array[3]} </td></tr>"
 washingtonRegionArray=$(curl -s GET 'https://washington.experitest.com/api/v2/regions' -H "Authorization: Bearer $washingtonAccessKey" | jq -rj '.[]|"\(.name): \(.status): \(.version);"')
 IFS=';' eval 'array=($washingtonRegionArray)'
 echo
-echo "<tr><td>Region 1 </td><td> ${array[0]} </td></tr>"
+echo "<tr><td>Washington Region 1 </td><td> ${array[0]} </td></tr>"
 
 washingtonServicesArray=$(curl -s GET 'https://washington.experitest.com/api/v2/region-services' -H "Authorization: Bearer $washingtonAccessKey" | jq -rj '.[]|"\(.hostOrIp) \(.type): \(.status): \(.version);"')
 IFS=';' eval 'array=($washingtonServicesArray)'
@@ -221,7 +221,7 @@ seoulAccessKey=eyJhbGciOiJIUzI1NiJ9.eyJ4cC51Ijo0NiwieHAucCI6MSwieHAubSI6MTYxODMy
 seoulRegionArray=$(curl -s GET 'https://seoul.experitest.com/api/v2/regions' -H "Authorization: Bearer $seoulAccessKey" | jq -rj '.[]|"\(.name): \(.status): \(.version);"')
 IFS=';' eval 'array=($seoulRegionArray)'
 echo
-echo "<tr><td>Region 1 </td><td> ${array[0]} </td></tr>"
+echo "<tr><td>Seoul Region 1 </td><td> ${array[0]} </td></tr>"
 
 seoulServicesArray=$(curl -s GET 'https://seoul.experitest.com/api/v2/region-services' -H "Authorization: Bearer $seoulAccessKey" | jq -rj '.[]|"\(.hostOrIp) \(.type): \(.status): \(.version);"')
 IFS=';' eval 'array=($seoulServicesArray)'
@@ -257,7 +257,7 @@ echo "<tr><td>Selenium Agent 5 </td><td> ${array[4]} </td></tr>"
 tokyoRegionArray=$(curl -s GET 'https://tokyo.experitest.com/api/v2/regions' -H "Authorization: Bearer $tokyoAccessKey" | jq -rj '.[]|"\(.name): \(.status): \(.version);"')
 IFS=';' eval 'array=($tokyoRegionArray)'
 echo
-echo "<tr><td>Region 1 </td><td> ${array[0]} </td></tr>"
+echo "<tr><td>TOKYO Region 1 </td><td> ${array[0]} </td></tr>"
 
 tokyoServicesArray=$(curl -s GET 'https://tokyo.experitest.com/api/v2/region-services' -H "Authorization: Bearer $tokyoAccessKey" | jq -rj '.[]|"\(.hostOrIp) \(.type): \(.status): \(.version);"')
 IFS=';' eval 'array=($tokyoServicesArray)'

@@ -131,4 +131,3 @@ echo "<tr><td>Service 2 </td><td> ${array[1]} </td></tr>"
 echo "<tr><td>Service 3 </td><td> ${array[2]} </td></tr>"
 echo "</table></body></html>";
 echo "<p>       </p>"
-echo "<tr> <td> Passed </td> <td> Failed </td> </tr>"

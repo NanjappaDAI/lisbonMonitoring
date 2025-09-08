@@ -23,5 +23,16 @@ if [ "$latestBuildId2" -gt "$maxBuildId" ]; then maxBuildId=$latestBuildId2; fi
 if [ "$latestBuildIdMaster" -gt "$maxBuildId" ]; then maxBuildId=$latestBuildIdMaster; fi
 
 #echo "Latest build ID: $maxBuildId"
-ReporterStatus=$(curl -s "http://192.168.1.213:8090/app/rest/builds/id:$maxBuildId" -H "Authorization: Bearer $accessKey" | sed -n 's:.*<statusText>\(.*\)</statusText>.*:\1:p')
-echo "Status Text: $ReporterStatus"
+reporterStatus=$(curl -s "http://192.168.1.213:8090/app/rest/builds/id:$maxBuildId" -H "Authorization: Bearer $accessKey" | sed -n 's:.*<statusText>\(.*\)</statusText>.*:\1:p')
+reporterBuildDate=$(curl -s "http://192.168.1.213:8090/app/rest/builds/id:$maxBuildId" -H "Authorization: Bearer $accessKey" | sed -n 's:.*<startDate>\([0-9]\{8\}\).*<\/startDate>.*:\1:p')
+
+recentruns="/Users/auto/lisbonmonitor/reporter.txt"
+echo "$reporterBuildDate $reporterStatus" >> $recentruns
+tail -n 14 $recentruns > reporter_latest.txt
+sort -t':' -k3,3nr reporter_latest.txt -o reporter_latest.txt
+averages=$(head -n 7 reporter_latest.txt | awk -F'[ ,:]+' '{for(i=1;i<=NF;i++){if($i=="failed")f+=$(i+1); if($i=="passed")p+=$(i+1);} c++} END{if(c>0) printf "%d %d", int(f/c), int(p/c); else print "0 0"}')
+failed_avg=${averages%% *}
+passed_avg=${averages#* }
+
+echo "<tr> <td> "Reporter" </td> <td> $passed_avg </td> <td> $failed_avg </td> </tr>" >> average.txt
+echo "<tr> <td> "Reporter" </td> <td> $reporterBuildDate </td> <td> $reporterStatus </td> </tr>" >> dailyStatus.txt

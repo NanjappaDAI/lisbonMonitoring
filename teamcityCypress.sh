@@ -34,6 +34,7 @@ averages=$(head -n 7 cypress_latest.txt | awk -F'[ ,:]+' '{for(i=1;i<=NF;i++){if
 failed_avg=${averages%% *}
 passed_avg=${averages#* }
 
-echo "<tr> <td> $passed_avg </td> <td> $failed_avg </td> </tr>"
+echo "<tr> <td> "Cypress" </td> <td> $passed_avg </td> <td> $failed_avg </td> </tr>" > average.txt
+echo "<tr> <td> "Cypress" </td> <td> $cypressBuildDate </td> <td> $cypressStatus </td> </tr>" > dailyStatus.txt
 
 

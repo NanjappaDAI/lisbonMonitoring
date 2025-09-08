@@ -26,7 +26,7 @@ if [ "$latestBuildIdMaster" -gt "$maxBuildId" ]; then maxBuildId=$latestBuildIdM
 cypressStatus=$(curl -s "http://192.168.1.213:8090/app/rest/builds/id:$maxBuildId" -H "Authorization: Bearer $accessKey" | sed -n 's:.*<statusText>\(.*\)</statusText>.*:\1:p')
 cypressBuildDate=$(curl -s "http://192.168.1.213:8090/app/rest/builds/id:$maxBuildId" -H "Authorization: Bearer $accessKey" | sed -n 's:.*<startDate>\([0-9]\{8\}\).*<\/startDate>.*:\1:p')
 
-recentruns="/Users/auto/lisbonmonitor/cypress_latest.txt"
+recentruns="/Users/auto/lisbonmonitor/cypress.txt"
 echo "$cypressBuildDate $cypressStatus" >> $recentruns
 tail -n 14 $recentruns > cypress_latest.txt
 sort -t':' -k3,3nr cypress_latest.txt -o cypress_latest.txt

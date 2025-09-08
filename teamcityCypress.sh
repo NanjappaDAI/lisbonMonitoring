@@ -29,8 +29,6 @@ echo "$cypressBuildDate $cypressStatus" >> cypress.txt
 tail -n 14 cypress.txt > cypress_latest.txt
 sort -t':' -k3,3nr cypress_latest.txt -o cypress_latest.txt
 averages=$(head -n 7 cypress_latest.txt | awk -F'[ ,:]+' '{for(i=1;i<=NF;i++){if($i=="failed")f+=$(i+1); if($i=="passed")p+=$(i+1);} c++} END{if(c>0) printf "%d %d", int(f/c), int(p/c); else print "0 0"}')
-echo $averages
-
 failed_avg=${averages%% *}
 passed_avg=${averages#* }
 

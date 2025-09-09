@@ -13,5 +13,5 @@ averages=$(head -n 7 LocalAppium_latest.txt | awk -F'[ ,:]+' '{for(i=1;i<=NF;i++
 failed_avg=${averages%% *}
 passed_avg=${averages#* }
 
-echo "<tr> <td> "Local Appium" </td> <td> $passed_avg </td> <td> $failed_avg </td> </tr>" > average.txt
-echo "<tr> <td> "Local Appium" </td> <td> $LocalAppiumBuildDate </td> <td> $LocalAppiumStatus </td> </tr>" > dailyStatus.txt
+echo "<tr> <td> "Local Appium" </td> <td> $passed_avg </td> <td> $failed_avg </td> </tr>" >> average.txt
+echo "<tr> <td> "Local Appium" </td> <td> $LocalAppiumBuildDate </td> <td> $LocalAppiumStatus </td> </tr>" >> dailyStatus.txt

@@ -13,5 +13,5 @@ averages=$(head -n 7 si_latest.txt | awk -F'[ ,:]+' '{for(i=1;i<=NF;i++){if($i==
 failed_avg=${averages%% *}
 passed_avg=${averages#* }
 
-echo "<tr> <td> "Selenium Intregration" </td> <td> $passed_avg </td> <td> $failed_avg </td> </tr>" > average.txt
-echo "<tr> <td> "Selenium Intregration" </td> <td> $siBuildDate </td> <td> $siStatus </td> </tr>" > dailyStatus.txt
+echo "<tr> <td> "Selenium Intregration" </td> <td> $passed_avg </td> <td> $failed_avg </td> </tr>" >> average.txt
+echo "<tr> <td> "Selenium Intregration" </td> <td> $siBuildDate </td> <td> $siStatus </td> </tr>" >> dailyStatus.txt

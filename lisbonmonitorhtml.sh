@@ -1,5 +1,5 @@
 #!/bin/sh
-accessKey=eyJhbGciOiJIUzI1NiJ9.eyJ4cC51Ijo0MiwieHAucCI6MywieHAubSI6MTcwMTAwMjYwNzIxMiwiZXhwIjoyMDE2MzYyNjA3LCJpc3MiOiJjb20uZXhwZXJpdGVzdCJ9.SMGYMR4IFha22QTlFFHg9UdyayG4kx4VcRHg7PjsYBY
+accessKey=aut_1_v5Skk7uf1ujaasWb8dd2DAaO_z01hgvpqQECOIg7dGE=
 dateval=$(date)
 deviceArray=()
 

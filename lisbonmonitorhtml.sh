@@ -1,5 +1,5 @@
 #!/bin/sh
-accessKey=aut_1_v5Skk7uf1ujaasWb8dd2DAaO_z01hgvpqQECOIg7dGE=
+accessKey=YWRtaW46QWIxMjM0NTY=
 dateval=$(date)
 deviceArray=()
 
@@ -45,12 +45,12 @@ IFS=' ' read -ra deviceSplit <<< "$tcagent"
 tcagentfs=${deviceSplit[3]}
 echo "<tr><td> Teamcity agent free space </td><td>$tcagentfs</td></tr>"
 
-nvserverArray=$(curl -s GET 'https://lisbon.experitest.com/api/v2/nv-servers' -H "Authorization: Bearer $accessKey" | jq -rj '.[]|"\(.name): \(.status): \(.version);"')
+nvserverArray=$(curl -s GET 'https://lisbon.experitest.com/api/v2/nv-servers' -H "Authorization: Basic $accessKey" | jq -rj '.[]|"\(.name): \(.status): \(.version);"')
 IFS=';' eval 'array=($nvserverArray)'
 echo "<tr><td>NV server 1 </td><td> ${array[0]} </td></tr>"
 echo "<tr><td>NV server 2 </td><td> ${array[1]} </td></tr>"
 
-agentsArray=$(curl -s GET 'https://lisbon.experitest.com/api/v2/agents' -H "Authorization: Bearer $accessKey" | jq -rj '.[]|"\(.name): \(.statusForDisplay):  \(.version): \(.nvServerName);"')
+agentsArray=$(curl -s GET 'https://lisbon.experitest.com/api/v2/agents' -H "Authorization: Basic $accessKey" | jq -rj '.[]|"\(.name): \(.statusForDisplay):  \(.version): \(.nvServerName);"')
 IFS=';' eval 'array=($agentsArray)'
 echo "<tr><td>Agent 1 </td><td> ${array[0]} </td></tr>"
 echo "<tr><td>Agent 2 </td><td> ${array[1]} </td></tr>"
@@ -59,14 +59,14 @@ echo "<tr><td>Agent 4 </td><td> ${array[3]} </td></tr>"
 echo "<tr><td>Agent 5 </td><td> ${array[4]} </td></tr>"
 
 
-regionArray=$(curl -s GET 'https://lisbon.experitest.com/api/v2/regions' -H "Authorization: Bearer $accessKey" | jq -rj '.[]|"\(.name): \(.status): \(.version);"')
+regionArray=$(curl -s GET 'https://lisbon.experitest.com/api/v2/regions' -H "Authorization: Basic $accessKey" | jq -rj '.[]|"\(.name): \(.status): \(.version);"')
 IFS=';' eval 'array=($regionArray)'
 echo
 
 echo "<tr><td>Lisbon Region 1 </td><td> ${array[0]} </td></tr>"
 echo "<tr><td>Lisbon Region 2 </td><td> ${array[1]} </td></tr>"
 
-servicesArray=$(curl -s GET 'https://lisbon.experitest.com/api/v2/region-services' -H "Authorization: Bearer $accessKey" | jq -rj '.[]|"\(.hostOrIp) \(.type): \(.status): \(.version);"')
+servicesArray=$(curl -s GET 'https://lisbon.experitest.com/api/v2/region-services' -H "Authorization: Basic $accessKey" | jq -rj '.[]|"\(.hostOrIp) \(.type): \(.status): \(.version);"')
 IFS=';' eval 'array=($servicesArray)'
 echo "<tr><td>Service 1 </td><td> ${array[0]} </td></tr>"
 echo "<tr><td>Service 2 </td><td> ${array[1]} </td></tr>"
@@ -78,9 +78,10 @@ echo "<tr><td>Service 7 </td><td> ${array[6]} </td></tr>"
 echo "<tr><td>Service 8 </td><td> ${array[7]} </td></tr>"
 echo "</table></body></html>";
 echo "<p>       </p>"
+curl -s -L -X GET 'https://lisbon.experitest.com/api/v1/files/17793/download' -H 'Authorization: Basic YWRtaW46QWIxMjM0NTY=' -H 'Cookie: XSRF-TOKEN=41b626fe-0c40-4e0b-bcb4-c394bcc328c4' -F 'project_id="17413"'
 
 echo "<html><body><table border=1>"
-deviceArray=$(curl -s GET 'https://lisbon.experitest.com/api/v1/devices' -H "Authorization: Bearer $accessKey" | jq -rj '.data[]|"\(.id)%\(.deviceName)%\(.region)%\(.deviceOs)%\(.osVersion)%\(.agentName)%\(.displayStatus)%\(.bluetooth);"')
+deviceArray=$(curl -s GET 'https://lisbon.experitest.com/api/v1/devices' -H "Authorization: Basic $accessKey" | jq -rj '.data[]|"\(.id)%\(.deviceName)%\(.region)%\(.deviceOs)%\(.osVersion)%\(.agentName)%\(.displayStatus)%\(.bluetooth);"')
 IFS=';' eval 'array=($deviceArray)'
 ai=1
 i=1
@@ -100,9 +101,9 @@ for element in ${array[@]}; do
 
   deviceName=$(echo $deviceName | tr '[:lower:]' '[:upper:]')
 if [ ! -z "$deviceRegion" -a "$deviceRegion" != " " ]; then
-  deviceIP=$(curl -s GET https://lisbon.experitest.com/api/v1/devices/$deviceID/WifiIPAddress -H "Authorization: Bearer $accessKey" | jq -rj '(.v4)," ",(.ssid)')
+  deviceIP=$(curl -s GET https://lisbon.experitest.com/api/v1/devices/$deviceID/WifiIPAddress -H "Authorization: Basic $accessKey" | jq -rj '(.v4)," ",(.ssid)')
 
-  httpResponse=$(curl -s -L -X POST https://lisbon.experitest.com/api/v1/devices/$deviceID/http-request -H "Authorization: Bearer $accessKey" -H 'content-type: application/json' --data-raw '{
+  httpResponse=$(curl -s -L -X POST https://lisbon.experitest.com/api/v1/devices/$deviceID/http-request -H "Authorization: Basic $accessKey" -H 'content-type: application/json' --data-raw '{
                           "url":"http://autoserver.experitest.com:8060/"
                       }' | jq '.data | .statusCode')
 
@@ -110,7 +111,7 @@ if [ ! -z "$deviceRegion" -a "$deviceRegion" != " " ]; then
   deviceIPAddr=${deviceIPSplit[0]}
   deviceWiFiName=${deviceIPSplit[1]}
 if [ $deviceOS == Android ]; then
-  curlOP=$(curl -s -L -X GET https://lisbon.experitest.com/api/v1/devices/$deviceID/cacerts -H "Authorization: Bearer $accessKey")
+  curlOP=$(curl -s -L -X GET https://lisbon.experitest.com/api/v1/devices/$deviceID/cacerts -H "Authorization: Basic $accessKey")
   if [[ $curlOP == *"mitmproxy"* ]]; then
   mitmCertsAvailable="MITM"
   else
@@ -136,7 +137,7 @@ for element in ${array[@]}; do
   deviceStatus=${deviceSplit[6]}
   btStatus=${deviceSplit[7]}
 if [ ! -z "$deviceRegion" -a "$deviceRegion" != " " ]; then
-  deviceIP=$(curl -s GET https://lisbon.experitest.com/api/v1/devices/$deviceID/WifiIPAddress -H "Authorization: Bearer $accessKey" | jq -rj '(.v4)," ",(.ssid)')
+  deviceIP=$(curl -s GET https://lisbon.experitest.com/api/v1/devices/$deviceID/WifiIPAddress -H "Authorization: Basic $accessKey" | jq -rj '(.v4)," ",(.ssid)')
   IFS=' ' read -ra deviceIPSplit <<< "$deviceIP"
 if [ $deviceOS == iOS ]; then
   echo "<tr><td> ${i}"."   </td> <td> $deviceStatus </td> <td> ${deviceName} </td> <td> ${deviceID} </td> <td> ${agentName:0:5} </td> <td> ${OSVersion} </td> <td> ${deviceIP} </td> <td> $httpResponse </td> <td> ${btStatus//null/} </td> </tr>"

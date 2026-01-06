@@ -1,3 +1,1 @@
-<tr> <td> 20250908 </td> <td> Tests failed: 1, passed: 36 </td> </tr>
-<tr> <td> 20250907 </td> <td> Tests failed: 77 (15 new), passed: 131, ignored: 20 </td> </tr>
-<tr> <td> 20250907 </td> <td> Tests failed: 55 (15 new), passed: 115 </td> </tr>
+<tr> <td> CT </td> <td> 20260105 </td> <td> Tests failed: 67 (43 new), passed: 799, ignored: 9 </td> </tr>

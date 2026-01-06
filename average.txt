@@ -1,3 +1,1 @@
-<tr> <td> Cypress </td> <td> 36 </td> <td> 1 </td> </tr>
-<tr> <td> reporter </td> <td> 131 </td> <td> 77 </td> </tr>
-<tr> <td> Selenium </td> <td> 115 </td> <td> 55 </td> </tr>
+<tr> <td> CT </td> <td> 799 </td> <td> 67 </td> </tr>

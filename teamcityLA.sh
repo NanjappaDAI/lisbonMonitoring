@@ -1,9 +1,9 @@
 #!/bin/bash
 baseURL=http://192.168.1.213:8090/app
-accessKey=eyJ0eXAiOiAiVENWMiJ9.QksxMjlNWjFJLXhzY3JsUE5tMzROMGNuODk4.ZmQ2ZDkyNjYtMDUzYi00ZGFiLTg0ZTEtMjQyMDMzODE2ODEz
+accessKey=bmFuamFwcGEuc29tYWlhaDoxMjM0NTY=
 
-LocalAppiumStatus=$(curl -s "http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingLocalAppium/builds/count:1" -H "Authorization: Bearer $accessKey" | sed -n 's:.*<statusText>\(.*\)</statusText>.*:\1:p')
-LocalAppiumBuildDate=$(curl -s "http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingLocalAppium/builds/count:1" -H "Authorization: Bearer $accessKey" | sed -n 's:.*<startDate>\([0-9]\{8\}\).*<\/startDate>.*:\1:p')
+LocalAppiumStatus=$(curl -s "http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingLocalAppium/builds/count:1" -H "Authorization: Basic $accessKey" | sed -n 's:.*<statusText>\(.*\)</statusText>.*:\1:p')
+LocalAppiumBuildDate=$(curl -s "http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingLocalAppium/builds/count:1" -H "Authorization: Basic $accessKey" | sed -n 's:.*<startDate>\([0-9]\{8\}\).*<\/startDate>.*:\1:p')
 
 recentruns="/Users/auto/lisbonmonitor/LocalAppium.txt"
 echo "$LocalAppiumBuildDate $LocalAppiumStatus" >> $recentruns

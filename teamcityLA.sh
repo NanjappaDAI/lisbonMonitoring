@@ -1,6 +1,6 @@
 #!/bin/bash
 baseURL=http://192.168.1.213:8090/app
-accessKey=bmFuamFwcGEuc29tYWlhaDoxMjM0NTY=
+accessKey=bmFuamFwcGEuc29tYWlhaDphdUdVQCkyMQ==
 
 LocalAppiumStatus=$(curl -s "http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingLocalAppium/builds/count:1" -H "Authorization: Basic $accessKey" | sed -n 's:.*<statusText>\(.*\)</statusText>.*:\1:p')
 LocalAppiumBuildDate=$(curl -s "http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingLocalAppium/builds/count:1" -H "Authorization: Basic $accessKey" | sed -n 's:.*<startDate>\([0-9]\{8\}\).*<\/startDate>.*:\1:p')

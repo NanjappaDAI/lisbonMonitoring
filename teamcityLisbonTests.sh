@@ -4,13 +4,16 @@ accessKey=eyJ0eXAiOiAiVENWMiJ9.YzBPYjZ6RXRKUGVBXzkyQUZZMHdwTTdoWGZ3.MDZlZGFlNTEt
 basicAuth=bmFuamFwcGEuc29tYWlhaDoxMjM0NTY
 buildDetails=$(curl -s GET 'http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingMaster/builds/count:1' -H "Authorization: Bearer $accessKey")
 
-buildID=$(echo "$buildDetails" | xmllint --xpath 'string(/build/@id)' -)
-buildNumber=$(echo "$buildDetails" | xmllint --xpath 'string(/build/@number)' -)
-statusText=$(echo "$buildDetails" | xmllint --xpath 'string(/build/statusText)' -)
+IFS='"' read -ra buildDetailsSplit <<<"$buildDetails"
+buildID=${buildDetailsSplit[7]}
+buildNumber=${buildDetailsSplit[11]}
+statusTextRaw=${buildDetailsSplit[24]}
+statusText=${statusTextRaw:13:51}
 
 baseFolder="/Users/auto/lisbonmonitor/"
 logfilename="$baseFolder$buildNumber.log"
 finalReport="$baseFolder$buildNumber.txt"
+: > "$finalReport"
 
 
 curl -s -L -X GET 'http://192.168.1.213:8090/httpAuth/app/buildLog?buildId='$buildID'&indent=true' -H "Authorization: Basic $basicAuth=" >> $logfilename
@@ -106,17 +109,7 @@ while IFS= read -r line; do
 
   if [[ $line2 == *"Test Output"* ]] && [[ $line1 != *"F:"* ]]; then
 #    printf "%0s %20s %20s %20s %20s %20s" "${buildDate};" "${cloudVersion};" "${testCaseName}_${suiteName:0:3};" "${deviceDetails};" "PASS;" "${suiteName}" >>''$buildNumber''.txt
-    printf '%s;%s;%s_%s;%s;%s;%s;%s;%s\n' \
-      "$buildDate" \
-      "$cloudVersion" \
-      "$testCaseName" \
-      "${suiteName:0:1}" \
-      "${deviceUDID//\"/}" \
-      "$deviceModelFinal" \
-      "${deviceVersion:0:5}" \
-      "1" \
-      "$suiteName" >> "$finalReport"
-
+    echo "${buildDate};""${cloudVersion};""${testCaseName}_${suiteName:0:1};""${deviceUDID//"}"/};""$deviceModelFinal;""${deviceVersion:0:5};""1;""${suiteName}" >> $finalReport
     deviceUDID='NA'
     deviceModelFinal='NA'
     deviceVersion='NA'
@@ -124,17 +117,7 @@ while IFS= read -r line; do
 
   if [[ $line2 == *"Test Output"* ]] && [[ $line1 == *"F:"* ]]; then
 #    printf "%0s %20s %20s %20s %20s %20s" "${buildDate};" "${cloudVersion};" "${testCaseName}_${suiteName:0:3};" "${deviceDetails};" "FAIL;" "${suiteName}" >>''$buildNumber''.txt
-    printf '%s;%s;%s_%s;%s;%s;%s;%s;%s\n' \
-      "$buildDate" \
-      "$cloudVersion" \
-      "$testCaseName" \
-      "${suiteName:0:1}" \
-      "${deviceUDID//\"/}" \
-      "$deviceModelFinal" \
-      "${deviceVersion:0:5}" \
-      "0" \
-      "$suiteName" >> "$finalReport"
-
+    echo "${buildDate};""${cloudVersion};""${testCaseName}_${suiteName:0:1};""${deviceUDID//"}"/};""$deviceModelFinal;""${deviceVersion:0:5};""0;""${suiteName}" >> $finalReport
     deviceUDID='NA'
     deviceModelFinal='NA'
     deviceVersion='NA'

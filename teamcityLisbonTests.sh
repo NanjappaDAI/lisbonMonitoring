@@ -4,16 +4,20 @@ accessKey=eyJ0eXAiOiAiVENWMiJ9.YzBPYjZ6RXRKUGVBXzkyQUZZMHdwTTdoWGZ3.MDZlZGFlNTEt
 basicAuth=bmFuamFwcGEuc29tYWlhaDphdUdVQCkyMQ==
 buildDetails=$(curl -s GET 'http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingMaster/builds/count:1' -H "Authorization: Bearer $accessKey")
 
-IFS='"' read -ra buildDetailsSplit <<<"$buildDetails"
-buildID=${buildDetailsSplit[7]}
-buildNumber=${buildDetailsSplit[11]}
-statusTextRaw=${buildDetailsSplit[24]}
-statusText=${statusTextRaw:13:51}
+#IFS='"' read -ra buildDetailsSplit <<<"$buildDetails"
+#buildID=${buildDetailsSplit[7]}
+#buildNumber=${buildDetailsSplit[11]}
+#statusTextRaw=${buildDetailsSplit[24]}
+#statusText=${statusTextRaw:13:51}
+
+buildID=$(echo "$buildDetails" | xmllint --xpath 'string(/build/@id)' -)
+buildNumber=$(echo "$buildDetails" | xmllint --xpath 'string(/build/@number)' -)
+statusText=$(echo "$buildDetails" | xmllint --xpath 'string(/build/statusText)' -)
+
 
 baseFolder="/Users/auto/lisbonmonitor/"
 logfilename="$baseFolder$buildNumber.log"
 finalReport="$baseFolder$buildNumber.txt"
-: > "$finalReport"
 
 
 curl -s -L -X GET 'http://192.168.1.213:8090/httpAuth/app/buildLog?buildId='$buildID'&indent=true' -H "Authorization: Basic $basicAuth=" >> $logfilename

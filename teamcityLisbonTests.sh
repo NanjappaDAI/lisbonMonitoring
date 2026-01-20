@@ -140,11 +140,7 @@ while IFS= read -r line; do
 
 done <"$file"
 
-sed -E -i '' 's/(_|^)2\.[0-9]+\.[0-9]+(_|$)/\1OSS\2/g' $finalReport
-
-sed -E -i '' 's/([a-zA-Z]+)[0-9]+_/\1_/g' $finalReport
-
-sed -E -i '' 's/(_|^)2\.[0-9]+\.[0-9]+(_|$)/\1OSS\2/g' $finalReport
+sed -E -i '' 's/\(\[[0-9]+\][[:space:]]*V([0-9]+)\)/_V\1/' $finalReport
 
 echo "Cloud Version:" $cloudVersion $statusText
 cat $finalReport

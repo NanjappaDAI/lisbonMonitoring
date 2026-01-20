@@ -65,8 +65,9 @@ while IFS= read -r line; do
   fi
 done <"$file"
 
-while IFS= read -r line; do
+
 reportedTest=""
+while IFS= read -r line; do
   if [ ! -z "${prev}" ]; then
     line1="${prev}"
     line2="${line}"
@@ -78,7 +79,6 @@ reportedTest=""
     IFS='.' read -ra suiteNameSplit <<<"$suiteNameLine"
     suiteNameParse="${suiteNameSplit[@]: -1}"
     suiteName=${suiteNameParse// /';'}
-    #    suiteName="${suiteNameParse#"${suiteNameParse%%[![:blank:]]*}"}"
   fi
 
   if [[ $line == *"Test Output"* ]] && [[ $line == *"("* ]]; then
@@ -98,6 +98,16 @@ reportedTest=""
     testCaseName="$testCaseFinal$testcaseParamsFinal"
   fi
 
+    # Initialize status (initially assume PASS)
+    if [[ "$testStatus" == "" ]]; then
+      testStatus="PASS"
+    fi
+
+    # Check if it's a failure
+    if [[ $line == *"F:"* ]]; then
+      testStatus="FAIL"
+    fi
+
   if [[ $line == *"After test Device"* ]]; then
     deviceDetailsLine=$line
     IFS='{' read -ra deviceDetailsSplit <<<"$deviceDetailsLine"
@@ -111,18 +121,21 @@ reportedTest=""
     deviceDetails="${deviceUDID//"}"/};$deviceModelFinal;"${deviceVersion:0:5}" "
   fi
 
-  if [[ $line2 == *"Test Output"* ]] && [[ $line1 == *"F:"* ]] && [[ "$reportedTest" != "$testCaseName" ]]; then
-      echo "${buildDate};""${cloudVersion};""${testCaseName}_${suiteName:0:1};""${deviceUDID//"}"/};""$deviceModelFinal;""${deviceVersion:0:5};""0;""${suiteName}" >> $finalReport
-      deviceUDID='NA'
-      deviceModelFinal='NA'
-      deviceVersion='NA'
-  fi
+  if [[ $line == *"Test Output"* ]] && [[ "$reportedTest" != "$testCaseName" ]]; then
 
-  if [[ $line2 == *"Test Output"* ]] && [[ $line1 != *"F:"* ]] && [[ "$reportedTest" != "$testCaseName" ]]; then
-    echo "${buildDate};""${cloudVersion};""${testCaseName}_${suiteName:0:1};""${deviceUDID//"}"/};""$deviceModelFinal;""${deviceVersion:0:5};""1;""${suiteName}" >> $finalReport
+    if [[ "$testStatus" == "FAIL" ]]; then
+      echo "${buildDate};${cloudVersion};${testCaseName}_${suiteName:0:1};${deviceUDID//"}"/};${deviceModelFinal};${deviceVersion:0:5};0;${suiteName}" >> $finalReport
+    fi
+
+    if [[ "$testStatus" == "PASS" ]]; then
+      echo "${buildDate};${cloudVersion};${testCaseName}_${suiteName:0:1};${deviceUDID//"}"/};${deviceModelFinal};${deviceVersion:0:5};1;${suiteName}" >> $finalReport
+    fi
+
+    reportedTest="$testCaseName"
     deviceUDID='NA'
     deviceModelFinal='NA'
     deviceVersion='NA'
+    testStatus=""
   fi
 
 done <"$file"
@@ -136,4 +149,3 @@ sed -E -i '' 's/(_|^)2\.[0-9]+\.[0-9]+(_|$)/\1OSS\2/g' $finalReport
 echo "Cloud Version:" $cloudVersion $statusText
 cat $finalReport
 echo  "2026========== END OF REPORT =========="
-#echo ${failedTCArray[@]}

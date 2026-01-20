@@ -40,7 +40,6 @@ while IFS= read -r line; do
     test1=${failedTestCase[@]:0}
     #    echo "Test case OS " $test1
     failedTCFinal=${failedTestCaseFinal// /'.'}
-
     IFS=')' read -ra failedTCParamsSplit <<<"$failedLines"
     failedTCParse1=${failedTCParamsSplit[1]}
     failedTCParse2=${failedTCParse1//' FAILED'/}
@@ -67,6 +66,7 @@ while IFS= read -r line; do
 done <"$file"
 
 while IFS= read -r line; do
+reportedTest=""
   if [ ! -z "${prev}" ]; then
     line1="${prev}"
     line2="${line}"
@@ -110,7 +110,6 @@ while IFS= read -r line; do
     # shellcheck disable=SC2027
     deviceDetails="${deviceUDID//"}"/};$deviceModelFinal;"${deviceVersion:0:5}" "
   fi
-reportedTest=""
 
   if [[ $line2 == *"Test Output"* ]] && [[ $line1 == *"F:"* ]] && [[ "$reportedTest" != "$testCaseName" ]]; then
       echo "${buildDate};""${cloudVersion};""${testCaseName}_${suiteName:0:1};""${deviceUDID//"}"/};""$deviceModelFinal;""${deviceVersion:0:5};""0;""${suiteName}" >> $finalReport

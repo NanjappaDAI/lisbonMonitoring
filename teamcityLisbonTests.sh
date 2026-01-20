@@ -2,9 +2,7 @@
 baseURL=http://192.168.1.213:8090/app
 accessKey=eyJ0eXAiOiAiVENWMiJ9.YzBPYjZ6RXRKUGVBXzkyQUZZMHdwTTdoWGZ3.MDZlZGFlNTEtNGU4ZC00YWMzLTkxOWItMzgxODRmMzRjNTE0
 basicAuth=bmFuamFwcGEuc29tYWlhaDphdUdVQCkyMQ==
-#buildDetails=$(curl -s GET 'http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingMaster/builds/count:1' -H "Authorization: Bearer $accessKey")
-buildDetails=$(curl -s GET 'http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingMaster/builds/id:1855404' -H "Authorization: Bearer $accessKey")
-
+buildDetails=$(curl -s GET 'http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingMaster/builds/count:1' -H "Authorization: Bearer $accessKey")
 
 #IFS='"' read -ra buildDetailsSplit <<<"$buildDetails"
 #buildID=${buildDetailsSplit[7]}

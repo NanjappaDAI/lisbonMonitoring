@@ -110,18 +110,17 @@ while IFS= read -r line; do
     # shellcheck disable=SC2027
     deviceDetails="${deviceUDID//"}"/};$deviceModelFinal;"${deviceVersion:0:5}" "
   fi
+reportedTest=""
 
-  if [[ $line2 == *"Test Output"* ]] && [[ $line1 != *"F:"* ]]; then
-#    printf "%0s %20s %20s %20s %20s %20s" "${buildDate};" "${cloudVersion};" "${testCaseName}_${suiteName:0:3};" "${deviceDetails};" "PASS;" "${suiteName}" >>''$buildNumber''.txt
-    echo "${buildDate};""${cloudVersion};""${testCaseName}_${suiteName:0:1};""${deviceUDID//"}"/};""$deviceModelFinal;""${deviceVersion:0:5};""1;""${suiteName}" >> $finalReport
-    deviceUDID='NA'
-    deviceModelFinal='NA'
-    deviceVersion='NA'
+  if [[ $line2 == *"Test Output"* ]] && [[ $line1 == *"F:"* ]] && [[ "$reportedTest" != "$testCaseName" ]]; then
+      echo "${buildDate};""${cloudVersion};""${testCaseName}_${suiteName:0:1};""${deviceUDID//"}"/};""$deviceModelFinal;""${deviceVersion:0:5};""0;""${suiteName}" >> $finalReport
+      deviceUDID='NA'
+      deviceModelFinal='NA'
+      deviceVersion='NA'
   fi
 
-  if [[ $line2 == *"Test Output"* ]] && [[ $line1 == *"F:"* ]]; then
-#    printf "%0s %20s %20s %20s %20s %20s" "${buildDate};" "${cloudVersion};" "${testCaseName}_${suiteName:0:3};" "${deviceDetails};" "FAIL;" "${suiteName}" >>''$buildNumber''.txt
-    echo "${buildDate};""${cloudVersion};""${testCaseName}_${suiteName:0:1};""${deviceUDID//"}"/};""$deviceModelFinal;""${deviceVersion:0:5};""0;""${suiteName}" >> $finalReport
+  if [[ $line2 == *"Test Output"* ]] && [[ $line1 != *"F:"* ]] && [[ "$reportedTest" != "$testCaseName" ]]; then
+    echo "${buildDate};""${cloudVersion};""${testCaseName}_${suiteName:0:1};""${deviceUDID//"}"/};""$deviceModelFinal;""${deviceVersion:0:5};""1;""${suiteName}" >> $finalReport
     deviceUDID='NA'
     deviceModelFinal='NA'
     deviceVersion='NA'

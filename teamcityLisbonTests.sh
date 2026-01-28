@@ -8,8 +8,8 @@ basicAuth=bmFuamFwcGEuc29tYWlhaDphdUdVQCkyMQ==
 #buildDetails=$(curl -s GET 'http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingMaster/builds/id:1858671' -H "Authorization: Bearer $accessKey")
 #buildDetails=$(curl -s GET 'http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingMaster/builds/id:1854232' -H "Authorization: Bearer $accessKey")
 #buildDetails=$(curl -s GET 'http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingMaster/builds/id:1855404' -H "Authorization: Bearer $accessKey")
-#buildDetails=$(curl -s GET 'http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingMaster/builds/id:1857113' -H "Authorization: Bearer $accessKey")
-buildDetails=$(curl -s GET 'http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingMaster/builds/id:1857275' -H "Authorization: Bearer $accessKey")
+buildDetails=$(curl -s GET 'http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingMaster/builds/id:1857113' -H "Authorization: Bearer $accessKey")
+#buildDetails=$(curl -s GET 'http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingMaster/builds/id:1857275' -H "Authorization: Bearer $accessKey")
 
 #IFS='"' read -ra buildDetailsSplit <<<"$buildDetails"
 #buildID=${buildDetailsSplit[7]}

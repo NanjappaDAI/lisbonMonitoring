@@ -2,7 +2,14 @@
 baseURL=http://192.168.1.213:8090/app
 accessKey=eyJ0eXAiOiAiVENWMiJ9.YzBPYjZ6RXRKUGVBXzkyQUZZMHdwTTdoWGZ3.MDZlZGFlNTEtNGU4ZC00YWMzLTkxOWItMzgxODRmMzRjNTE0
 basicAuth=bmFuamFwcGEuc29tYWlhaDphdUdVQCkyMQ==
-buildDetails=$(curl -s GET 'http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingMaster/builds/count:1' -H "Authorization: Bearer $accessKey")
+#buildDetails=$(curl -s GET 'http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingMaster/builds/count:1' -H "Authorization: Bearer $accessKey")
+
+#buildDetails=$(curl -s GET 'http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingMaster/builds/id:1857360' -H "Authorization: Bearer $accessKey")
+#buildDetails=$(curl -s GET 'http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingMaster/builds/id:1858671' -H "Authorization: Bearer $accessKey")
+#buildDetails=$(curl -s GET 'http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingMaster/builds/id:1854232' -H "Authorization: Bearer $accessKey")
+#buildDetails=$(curl -s GET 'http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingMaster/builds/id:1855404' -H "Authorization: Bearer $accessKey")
+#buildDetails=$(curl -s GET 'http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingMaster/builds/id:1857113' -H "Authorization: Bearer $accessKey")
+buildDetails=$(curl -s GET 'http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingMaster/builds/id:1857275' -H "Authorization: Bearer $accessKey")
 
 #IFS='"' read -ra buildDetailsSplit <<<"$buildDetails"
 #buildID=${buildDetailsSplit[7]}
@@ -14,7 +21,6 @@ buildID=$(echo "$buildDetails" | xmllint --xpath 'string(/build/@id)' -)
 buildNumber=$(echo "$buildDetails" | xmllint --xpath 'string(/build/@number)' -)
 statusText=$(echo "$buildDetails" | xmllint --xpath 'string(/build/statusText)' -)
 
-
 baseFolder="/Users/auto/lisbonmonitor/"
 logfilename="$baseFolder$buildNumber.log"
 finalReport="$baseFolder$buildNumber.txt"
@@ -25,10 +31,6 @@ echo $logfilename "Downloaded"
 echo
 
 failedTCArray=()
-
-# shellcheck disable=SC2059
-#printf "$header" "BuildDate" "CloudVersion" "TestCaseName" "DeviceUDID DeviceModel DeviceVersion" "Status" "SuiteName" >''$buildNumber''.txt
-
 file=$logfilename
 
 while IFS= read -r line; do
@@ -98,16 +100,6 @@ while IFS= read -r line; do
     testCaseName="$testCaseFinal$testcaseParamsFinal"
   fi
 
-    # Initialize status (initially assume PASS)
-    if [[ "$testStatus" == "" ]]; then
-      testStatus="PASS"
-    fi
-
-    # Check if it's a failure
-    if [[ $line == *"F:"* ]]; then
-      testStatus="FAIL"
-    fi
-
   if [[ $line == *"After test Device"* ]]; then
     deviceDetailsLine=$line
     IFS='{' read -ra deviceDetailsSplit <<<"$deviceDetailsLine"
@@ -121,22 +113,21 @@ while IFS= read -r line; do
     deviceDetails="${deviceUDID//"}"/};$deviceModelFinal;"${deviceVersion:0:5}" "
   fi
 
-  if [[ $line == *"Test Output"* ]] && [[ "$reportedTest" != "$testCaseName" ]]; then
+  if [[ $line2 == *"Test Output"* ]] && [[ $line1 != *"F:"* ]]; then
+    #    printf "%0s %20s %20s %20s %20s %20s" "${buildDate};" "${cloudVersion};" "${testCaseName}_${suiteName:0:3};" "${deviceDetails};" "PASS;" "${suiteName}" >>''$buildNumber''.txt
+        echo "${buildDate};""${cloudVersion};""${testCaseName}_${suiteName:0:1};""${deviceUDID//"}"/};""$deviceModelFinal;""${deviceVersion:0:5};""1;""${suiteName}" >> $finalReport
+        deviceUDID='NA'
+        deviceModelFinal='NA'
+        deviceVersion='NA'
+      fi
 
-    if [[ "$testStatus" == "FAIL" ]]; then
-      echo "${buildDate};${cloudVersion};${testCaseName}_${suiteName:0:1};${deviceUDID//"}"/};${deviceModelFinal};${deviceVersion:0:5};0;${suiteName}" >> $finalReport
-    fi
-
-    if [[ "$testStatus" == "PASS" ]]; then
-      echo "${buildDate};${cloudVersion};${testCaseName}_${suiteName:0:1};${deviceUDID//"}"/};${deviceModelFinal};${deviceVersion:0:5};1;${suiteName}" >> $finalReport
-    fi
-
-    reportedTest="$testCaseName"
-    deviceUDID='NA'
-    deviceModelFinal='NA'
-    deviceVersion='NA'
-    testStatus=""
-  fi
+      if [[ $line2 == *"Test Output"* ]] && [[ $line1 == *"F:"* ]]; then
+    #    printf "%0s %20s %20s %20s %20s %20s" "${buildDate};" "${cloudVersion};" "${testCaseName}_${suiteName:0:3};" "${deviceDetails};" "FAIL;" "${suiteName}" >>''$buildNumber''.txt
+        echo "${buildDate};""${cloudVersion};""${testCaseName}_${suiteName:0:1};""${deviceUDID//"}"/};""$deviceModelFinal;""${deviceVersion:0:5};""0;""${suiteName}" >> $finalReport
+        deviceUDID='NA'
+        deviceModelFinal='NA'
+        deviceVersion='NA'
+      fi
 
 done <"$file"
 

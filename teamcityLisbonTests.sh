@@ -1,6 +1,6 @@
 #!/bin/sh
 baseURL=http://192.168.1.213:8090/app
-accessKey=eyJ0eXAiOiAiVENWMiJ9.YzBPYjZ6RXRKUGVBXzkyQUZZMHdwTTdoWGZ3.MDZlZGFlNTEtNGU4ZC00YWMzLTkxOWItMzgxODRmMzRjNTE0
+accessKey=eyJ0eXAiOiAiVENWMiJ9.OWh6VU14VXhSQ3hOb0tHUjFvVzNkRWhhT0xF.ZTdjY2YxNjctZjI0Yy00NGY3LTg3MzEtYmI0ZTU0MDg1YzNl
 basicAuth=bmFuamFwcGEuc29tYWlhaDphdUdVQCkyMQ==
 buildDetails=$(curl -s GET 'http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingMaster/builds/count:1' -H "Authorization: Bearer $accessKey")
 #buildDetails=$(curl -s GET 'http://192.168.1.213:8090/app/rest/buildTypes/id:Automation_AutomationCloudExecution_ContinuousTestingMaster/builds/id:1857360' -H "Authorization: Bearer $accessKey")
